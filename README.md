@@ -96,6 +96,11 @@ php artisan key:generate
 php artisan migrate --seed
 ```
 ---
+### 3.  vue JS
+```bash
+docker-compose run --rm vue-builder npm run build  
+```
+---
 ##  Open application
 
 Frontend: http://localhost
