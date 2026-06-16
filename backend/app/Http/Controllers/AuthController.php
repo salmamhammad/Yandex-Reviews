@@ -15,7 +15,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        // Create a default seeded user if not exists (in production, use seeder)
+        // Create a default seeded user
         $user = User::firstOrCreate(
             ['email' => 'demo@example.com'],
             ['name' => 'Demo User', 'password' => bcrypt('password')]

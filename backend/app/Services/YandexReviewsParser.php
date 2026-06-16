@@ -166,7 +166,7 @@ class YandexReviewsParser
         $output = $process->getOutput();
 
         $data = json_decode($output, true);
-        Log::warning('data: ' . $output);
+        // Log::warning('data: ' . $output);
         $allReviews = $data['reviews'] ?? [];
 
         return $allReviews;

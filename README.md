@@ -83,22 +83,26 @@ problems: matching with timeout between the laravel and parser resposnse become 
 ### 1. Clone repository
 
 ```bash
-git clone https://github.com/your-repo/yandex-scraper.git
-cd yandex-scraper
+git clone https://github.com/salmamhammad/Yandex-Reviews.git
+cd Yandex-Reviews
+cd backend
+composer install --no-dev --optimize-autoloader
+cd ../
 docker-compose up -d --build
 ```
 ---
-### 2. Install Laravel dependencies
+### 2.  Laravel 
 ```bash
 docker exec -it yandex_php bash
-composer install
 php artisan key:generate
 php artisan migrate --seed
 ```
 ---
 ### 3.  vue JS
 ```bash
-docker-compose run --rm vue-builder npm run build  
+docker exec -it  yandex_vue_builder bash
+npm install
+npm run build   
 ```
 ---
 ##  Open application
