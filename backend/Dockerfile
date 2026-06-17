@@ -1,5 +1,6 @@
 FROM php:8.3-fpm
 
+# System packages
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -9,17 +10,18 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libzip-dev \
-    libcurl4-openssl-dev
+    libcurl4-openssl-dev \
+    && rm -rf /var/lib/apt/lists/*
 
+# Node.js
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-     && apt-get install -y nodejs
+    && apt-get install -y nodejs
 
-# install node dependencies for playwright
+# Playwright
 RUN npm install -g playwright
-
-# install browsers + system deps
 RUN npx playwright install --with-deps
 
+# PHP extensions
 RUN docker-php-ext-install \
     pdo_mysql \
     mbstring \
@@ -29,18 +31,22 @@ RUN docker-php-ext-install \
     gd \
     zip
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
+# Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 
-# Copy startup script into image
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY . .
 
-# Make it executable
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+# Install PHP dependencies if composer.json exists
+RUN if [ -f composer.json ]; then \
+      composer install --no-interaction --prefer-dist --optimize-autoloader; \
+    fi
 
-# Start using the script
-ENTRYPOINT ["docker-entrypoint.sh"]
+# Permissions
+RUN mkdir -p storage bootstrap/cache && \
+    chown -R www-data:www-data storage bootstrap/cache && \
+    chmod -R 775 storage bootstrap/cache
 
-# Launch PHP-FPM
-CMD ["php-fpm"]
+EXPOSE 9000
+
+CMD php artisan serve --host=0.0.0.0 --port=8000

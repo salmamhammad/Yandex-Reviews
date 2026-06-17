@@ -8,7 +8,7 @@ if [ ! -f .env ]; then
     cp .env.example .env
 fi
 
-composer install --no-interaction
+composer install --no-interaction --prefer-dist --optimize-autoloader
 
 php artisan key:generate --force
 

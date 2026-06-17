@@ -8,4 +8,6 @@ RUN npm install
 
 COPY . .
 
-CMD ["sh", "-c", "npm install && npm run build"]
+RUN npm run build
+
+CMD ["npm", "run", "dev", "--", "--host"]
