@@ -11,6 +11,15 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libcurl4-openssl-dev
 
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+     && apt-get install -y nodejs
+
+# install node dependencies for playwright
+RUN npm install -g playwright
+
+# install browsers + system deps
+RUN npx playwright install --with-deps
+
 RUN docker-php-ext-install \
     pdo_mysql \
     mbstring \
