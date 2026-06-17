@@ -87,8 +87,10 @@ cd frontend
 npm install
 cd ../
 cd backend 
+cp .env.example .env
 composer install --no-interaction --prefer-dist --optimize-autoloader
-docker compose up -d --build  --no-cache
+docker compose up -d --build 
+docker compose exec php php artisan key:generate
 docker compose exec php php artisan migrate:fresh --seed   
 ```
 ---
