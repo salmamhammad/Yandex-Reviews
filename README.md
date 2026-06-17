@@ -56,12 +56,13 @@ problems: matching with timeout between the laravel and parser resposnse become 
 ### Organizations 
 
 - id
+- business_id
 - name
-- yandex_url
+- url
 - average_rating
 - total_ratings
 - total_reviews
-- address
+- last_synced_at
 - created_at 
 - updated_at
 
@@ -70,11 +71,12 @@ problems: matching with timeout between the laravel and parser resposnse become 
 - id
 - organization_id
 - author
-- rating
 - date
 - text
-- likes
-- external_review_id
+- rating
+- yandex_review_id
+- created_at 
+- updated_at
 
 ---
 
@@ -84,7 +86,13 @@ problems: matching with timeout between the laravel and parser resposnse become 
 ```bash
 git clone https://github.com/salmamhammad/Yandex-Reviews.git
 cd Yandex-Reviews
-docker compose up -d --build
+cd frontend
+npm install
+cd ../
+cd backend 
+composer install --no-interaction --prefer-dist --optimize-autoloader
+docker compose up -d --build  --no-cache
+docker compose exec php php artisan migrate:fresh --seed   
 ```
 ---
 ---
