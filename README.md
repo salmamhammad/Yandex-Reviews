@@ -1,17 +1,17 @@
 # Yandex Maps Reviews Scraper
 
-Test assignment for integrating Yandex Maps organization reviews using Laravel, Vue 3, and Playwright.
+Тестовое задание по интеграции отзывов об организациях из Яндекс Карты с использованием Laravel, Vue 3 и Playwright.
 
-### Overview
+### Обзор
 
-This application allows authenticated users to connect a Yandex Maps organization page, extract and display organization reviews from using browser automation.  
-Since Yandex does not provide a public reviews API, this project uses **Playwright-based scraping** to collect dynamic review data.
+Это приложение позволяет авторизованным пользователям подключаться к странице организации в Яндекс Карты, извлекать и отображать отзывы об организации с помощью автоматизации браузера.
+Поскольку Яндекс не предоставляет общедоступный API для отзывов, в этом проекте используется **Playwright-based scraping** для сбора динамических данных об отзывах.
 
-## Features
+## Функции
 -  Authentication (Laravel Sanctum, single seeded user: username: demo@example.com / password: password)
--  Add Yandex Maps organization URL
--  Automatic scraping using Node.js + Playwright
-- Extract:
+-  Добавить URL-адрес организации Яндекс Карты
+-  Автоматический сбор данных с использованием Node.js + Playwright
+- Извлекать:
   - Average rating
   - Total ratings
   - Total reviews (~up to 600)
@@ -26,30 +26,27 @@ Since Yandex does not provide a public reviews API, this project uses **Playwrig
 ---
 ##  Scraping Strategy
 ### 1. DOM Scraping (parser/yandex-parser.js)
-The scraper listens to real browser network requests:
+Скрепер отслеживает реальные сетевые запросы браузера:
 
-- Page is fully rendered
-- Reviews are extracted via CSS selectors
-- Data is parsed from HTML elements
+- Страница полностью отображена.
+- Отзывы извлекаются с помощью CSS-селекторов.
+- Данные извлекаются из HTML-элементов.
 - up to 600
-- change App/Services/YandexReviewsParser.php  in 155
-advantages: Works without API access
+- изменять App/Services/YandexReviewsParser.php  в 155
+Преимущества: Работает без доступа к API.
 
-problems: matching with timeout between the laravel and parser resposnse become problem with high number of reviews and big size
-
+Проблемы: при большом количестве отзывов и большом размере данных возникает проблема с совпадением времени ожидания между ответами Laravel и парсера.
 ---
 ### 2. Network Interception (parser/yandex-parser2.js)
-The scraper listens to real browser network requests:
+Скрепер отслеживает реальные сетевые запросы браузера:
 
-- Captures `fetchReviews` API calls
-- Extracts structured JSON responses
-- Collects paginated reviews automatically
+- Перехватывает вызовы API `fetchReviews`
+- Извлекает структурированные JSON-ответы.
+- Автоматически собирает отзывы с постраничной разбивкой.
 - up to 500
-- change App/Services/YandexReviewsParser.php  in 155
-advantages: Fast and return more reliable and stractured data
-
-problems: matching with timeout between the laravel and parser resposnse become problem with high number of reviews and big size
-
+- изменять App/Services/YandexReviewsParser.php  в 155
+Преимущества: Быстрое получение более надежных и структурированных данных.
+Проблемы: при большом количестве отзывов и большом размере данных возникает проблема с совпадением времени ожидания между ответами Laravel и парсера.
 ---
 ##  Database Structure
 
@@ -117,4 +114,4 @@ DB_PASSWORD=root
 
 ---
 ## Future option
-using AI agent to analysis API or html code, maybe faster but not try it . it need much time to build and test.
+Использование ИИ-агента для анализа API или HTML-кода, возможно, быстрее, но я не пробовал. На разработку и тестирование потребуется много времени.
